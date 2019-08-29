@@ -4,6 +4,8 @@ package com.tiglle.mp.entity;
     import com.baomidou.mybatisplus.annotation.TableId;
     import java.time.LocalDateTime;
     import java.io.Serializable;
+
+    import com.baomidou.mybatisplus.annotation.TableName;
     import lombok.Data;
     import lombok.EqualsAndHashCode;
     import lombok.experimental.Accessors;
@@ -17,8 +19,6 @@ package com.tiglle.mp.entity;
 * @since 2019-08-29
 */
     @Data
-        @EqualsAndHashCode(callSuper = false)
-    @Accessors(chain = true)
     public class PlanDtl implements Serializable {
 
     private static final long serialVersionUID = 1L;

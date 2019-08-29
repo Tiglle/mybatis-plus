@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author tiglle
  * @since 2019-08-29
  */
-public interface IPlanService extends IService<Plan> {
+public interface PlanService extends IService<Plan> {
 
 }

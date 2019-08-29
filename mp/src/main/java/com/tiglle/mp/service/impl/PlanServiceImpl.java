@@ -2,7 +2,7 @@ package com.tiglle.mp.service.impl;
 
 import com.tiglle.mp.entity.Plan;
 import com.tiglle.mp.mapper.PlanMapper;
-import com.tiglle.mp.service.IPlanService;
+import com.tiglle.mp.service.PlanService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-08-29
  */
 @Service
-public class PlanServiceImpl extends ServiceImpl<PlanMapper, Plan> implements IPlanService {
+public class PlanServiceImpl extends ServiceImpl<PlanMapper, Plan> implements PlanService {
 
 }
