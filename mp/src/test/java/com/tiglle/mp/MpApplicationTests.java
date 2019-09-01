@@ -31,7 +31,7 @@ public class MpApplicationTests {
     @Test
     public void mpTest() {
         List<Plan> plans = planMapper.selectList(null);
-        System.out.println(plans.size()+"==========================");
+        System.out.println(plans.size() + "==========================");
     }
 
     /*新增,删除*/
@@ -40,12 +40,12 @@ public class MpApplicationTests {
         Plan plan = getPlan();
         //会自动填充自增长的id
         int i = planMapper.insert(plan);
-        System.out.println(i+"="+plan);
+        System.out.println(i + "=" + plan);
         //删除
-        Map<String,Object> attrAndField = new HashMap<>();
-        attrAndField.put("locno",plan.getLocno());
+        Map<String, Object> attrAndField = new HashMap<>();
+        attrAndField.put("locno", plan.getLocno());
         int i1 = planMapper.deleteByMap(attrAndField);
-        System.out.println("成功删除="+i1);
+        System.out.println("成功删除=" + i1);
     }
 
     /*1.查询为List<Map<String, Object>>结构*/
@@ -55,21 +55,24 @@ public class MpApplicationTests {
     public void mpTest2() {
         Plan plan = insertPlan();
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("locno",plan.getLocno());
+        queryWrapper.eq("locno", plan.getLocno());
         List<Map<String, Object>> maps = planMapper.selectMaps(queryWrapper);
-        maps.forEach(map->map.forEach((k,v)-> System.out.print("k="+k+",v="+v+"||")));
+        maps.forEach(map -> map.forEach((k, v) -> System.out.print("k=" + k + ",v=" + v + "||")));
         List<Object> objects = planMapper.selectObjs(queryWrapper);
         System.out.println(objects);
     }
 
+    /*分业查询:必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)*/
     @Test
     public void mpTest3() {
-        IPage<Plan> page = planMapper.selectPage(new Page<>(1, 10), new QueryWrapper<>());
+        /*searchCount:是否查询总条数*/
+        IPage<Plan> page = planMapper.selectPage(new Page(1, 10).setSearchCount(false),null);
+        List<Plan> records = page.getRecords();
         System.out.println(page);
     }
 
 
-    private Plan getPlan(){
+    private Plan getPlan() {
         Plan plan = new Plan();
         plan.setLocno("1234567810");
         plan.setCreateFlag("222");
@@ -105,7 +108,7 @@ public class MpApplicationTests {
         return plan;
     }
 
-    private Plan insertPlan(){
+    private Plan insertPlan() {
         Plan plan = getPlan();
         //会自动填充自增长的id
         planMapper.insert(plan);
