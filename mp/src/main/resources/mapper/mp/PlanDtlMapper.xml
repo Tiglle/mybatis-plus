@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tiglle.mp.mapper.PlanDtlMapper">
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tiglle.mp.entity.PlanDtl">
+        <id column="id" property="id" />
+        <result column="plan_order_no" property="planOrderNo" />
+        <result column="customer_no" property="customerNo" />
+        <result column="zone_no" property="zoneNo" />
+        <result column="roadway" property="roadway" />
+        <result column="location" property="location" />
+        <result column="pal_no" property="palNo" />
+        <result column="box_no" property="boxNo" />
+        <result column="old_sku" property="oldSku" />
+        <result column="new_sku" property="newSku" />
+        <result column="content_id" property="contentId" />
+        <result column="content_property_no" property="contentPropertyNo" />
+        <result column="sub_code" property="subCode" />
+        <result column="product_name" property="productName" />
+        <result column="quality" property="quality" />
+        <result column="plan_num" property="planNum" />
+        <result column="actual_num" property="actualNum" />
+        <result column="difference_num" property="differenceNum" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_user_name" property="createUserName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="update_time" property="updateTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="trace_id" property="traceId" />
+    </resultMap>
+
 </mapper>

@@ -1,11 +1,15 @@
 package com.tiglle.mp.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tiglle.mp.entity.Plan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -18,11 +22,27 @@ import org.apache.ibatis.annotations.Param;
 public interface PlanMapper extends BaseMapper<Plan> {
 
     /**
-     * 自定义分页 关联查询(只返回主表的字段)
+     * 自定义分页查询
      * @param page
-     * @param state
+     * @param queryWrapper
      * @return
      */
-    IPage<Plan> selectPageRelation(Page page, @Param(Constants) Integer state);
+    IPage<Plan> selectCustomPage(Page page, @Param(Constants.WRAPPER) Wrapper<Plan> queryWrapper);
 
+    /**
+     * 自定义分页  关联查询 xml写sql方式
+     * @param page
+     * @param map
+     * @return
+     */
+    IPage<Plan> selectRelationPage(Page page, @Param("map")Map<String,Object> map);
+
+    /**
+     * 自定义分页  关联查询 xml写sql方式
+     * @param page
+     * @param map
+     * @return
+     */
+    @Select("select p.order_no,pd.plan_order_no from plan p left join plan_dtl pd on p.order_no = pd.plan_order_no where p.locno = #{map.locno}")
+    IPage<Map<String,Object>> selectRelationPage1(Page page, Map<String, Object> map);
 }

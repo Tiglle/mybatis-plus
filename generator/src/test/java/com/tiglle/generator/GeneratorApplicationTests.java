@@ -42,16 +42,18 @@ public class GeneratorApplicationTests {
         gc.setServiceName("%sService");
         gc.setAuthor("tiglle");
         gc.setOpen(false);
+        //Mapper.xml中是否生产基础ResultMap
+        gc.setBaseResultMap(true);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         generator.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/mp?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
+        dsc.setUrl("jdbc:mysql://154.212.129.2:3306/mp?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("hateyou75");
+        dsc.setPassword("Hateyou75!");
         generator.setDataSource(dsc);
 
         // 包配置

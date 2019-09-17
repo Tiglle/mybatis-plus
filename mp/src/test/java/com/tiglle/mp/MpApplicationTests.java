@@ -2,6 +2,7 @@ package com.tiglle.mp;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tiglle.mp.entity.Plan;
 import com.tiglle.mp.mapper.PlanMapper;
@@ -26,6 +27,14 @@ public class MpApplicationTests {
     private PlanService planService;
     @Autowired
     private PlanMapper planMapper;
+
+    /*
+        排除非表字段的三种方式(实体类拥有的自断并不想与表中的自断关联)
+        1.加 static关键字
+        2.加上 transient 关键字
+        2.加上注解：TableField(exist=false) exist：是否要在表中存在，默认为true
+    */
+
 
     /*查询所有*/
     @Test
@@ -62,6 +71,34 @@ public class MpApplicationTests {
         System.out.println(objects);
     }
 
+    /*
+   condition的用法：为true时sql拼接此条件，false时不拼接
+    方法：xxxxxx(boolean condition, R column, Object val)
+   */
+    @Test
+    public void mpTest7() {
+        QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
+        String locno = "";
+        queryWrapper.eq(StringUtils.isNotEmpty(locno),"locno",locno);
+        List<Plan> plans = planMapper.selectList(queryWrapper);
+        System.out.println(plans);
+    }
+
+    /*
+    查询部分字段的方法
+    1.QueryWrapper的select(String... columns)方法,查询指定字段
+    2.QueryWrapper的select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)方法，不查询指定字段
+    */
+    @Test
+    public void mpTest6() {
+        QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.select("id,order_no");
+        //不查询字段 create_time,update_time
+        queryWrapper.select(Plan.class,temp->!temp.getColumn().equals("create_time")&&!temp.getColumn().equals("update_time"));
+        List<Plan> plans = planMapper.selectList(queryWrapper);
+        System.out.println(plans);
+    }
+
     /*分业查询:必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)*/
     @Test
     public void mpTest3() {
@@ -71,6 +108,29 @@ public class MpApplicationTests {
         System.out.println(page);
     }
 
+    /*自定义分页查询，注意Wrapper的getCustomSqlSegment():获取所有条件*/
+    @Test
+    public void mpTest4() {
+        QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("locno","101");
+        IPage<Plan> page = planMapper.selectCustomPage(new Page(1,10),queryWrapper);
+        List<Plan> records = page.getRecords();
+        System.out.println(page);
+    }
+
+    /*自定义分页关联查询：
+    1.xml写sql，只查询Plan主表部分，用Plan这个Entity接收即可
+    2.Mapper使用@Select注解写Sql，返回主表和次表的字段，用Map接收返回*/
+    @Test
+    public void mpTest5() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("locno","101");
+//        IPage<Plan> page = planMapper.selectRelationPage(new Page(1,10),map);
+//        List<Plan> records = page.getRecords();
+//        System.out.println(page);
+        IPage<Map<String,Object>> page = planMapper.selectRelationPage1(new Page(1,10),map);
+        System.out.println(page);
+    }
 
     private Plan getPlan() {
         Plan plan = new Plan();

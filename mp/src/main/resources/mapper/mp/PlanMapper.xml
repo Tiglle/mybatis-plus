@@ -2,4 +2,54 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tiglle.mp.mapper.PlanMapper">
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.tiglle.mp.entity.Plan">
+        <id column="id" property="id" />
+        <result column="locno" property="locno" />
+        <result column="customer_no" property="customerNo" />
+        <result column="order_no" property="orderNo" />
+        <result column="status" property="status" />
+        <result column="create_flag" property="createFlag" />
+        <result column="initiator" property="initiator" />
+        <result column="service_source" property="serviceSource" />
+        <result column="service_reason_code" property="serviceReasonCode" />
+        <result column="service_deal_code" property="serviceDealCode" />
+        <result column="exchange_sku" property="exchangeSku" />
+        <result column="product_quality" property="productQuality" />
+        <result column="is_in_warehouse" property="isInWarehouse" />
+        <result column="task_type" property="taskType" />
+        <result column="source_order_no" property="sourceOrderNo" />
+        <result column="plan_box_num" property="planBoxNum" />
+        <result column="plan_pieces_num" property="planPiecesNum" />
+        <result column="actual_box_num" property="actualBoxNum" />
+        <result column="actual_pieces_num" property="actualPiecesNum" />
+        <result column="difference_num" property="differenceNum" />
+        <result column="product_type" property="productType" />
+        <result column="verify_user_id" property="verifyUserId" />
+        <result column="verify_user_name" property="verifyUserName" />
+        <result column="verify_time" property="verifyTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_user_name" property="createUserName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="update_time" property="updateTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="trace_id" property="traceId" />
+        <result column="remarks" property="remarks" />
+    </resultMap>
+
+    <select id="selectCustomPage" resultType="com.tiglle.mp.entity.Plan">
+        select * from plan  ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectRelationPage" resultType="com.tiglle.mp.entity.Plan">
+         select * from plan p left join plan_dtl pd on p.order_no = pd.plan_order_no
+         <where>
+             <if test="map.locno!=null and map.locno!=''">
+                 p.locno = #{map.locno}
+             </if>
+         </where>
+    </select>
+
 </mapper>
