@@ -1,6 +1,8 @@
 package com.tiglle.mp.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.SqlCondition;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -29,6 +31,7 @@ public class Plan implements Serializable {
     /**
      * 仓库编码
      */
+    @TableField(condition = SqlCondition.EQUAL)
     private String locno;
 
     /**
@@ -39,11 +42,14 @@ public class Plan implements Serializable {
     /**
      * 单据编号
      */
+    @TableField(condition = SqlCondition.LIKE)
     private String orderNo;
 
     /**
      * 状态(10新建、20已审核、30已取消、40已完结)
      */
+    //大于
+    @TableField(condition = "%s&gt;#{%s}")
     private String status;
 
     /**

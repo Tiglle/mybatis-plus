@@ -99,6 +99,24 @@ public class MpApplicationTests {
         System.out.println(plans);
     }
 
+     /*
+     QueryWrapper条件构造器
+     1.使用public QueryWrapper(T entity)构造器，传入实体对象
+     2.实体有值得字段会加入sql条件拼接
+     3.实体字段可以使用@TableField(condition = SqlCondition.LIKE)或者手写条件:condition = "%s&gt;#{%s}",默认eq
+     4.实体的条件和wrapper的条件会一起使用，如果实体和wrapper重复，会重复拼接条件
+     */
+    @Test
+    public void mpTest8() {
+        Plan queryPlan = new Plan();
+        queryPlan.setOrderNo("101ZP201906060001");
+        queryPlan.setLocno("101");
+        QueryWrapper<Plan> queryWrapper = new QueryWrapper<>(queryPlan);
+        queryWrapper.or().eq("locno","102");
+        List<Plan> plans = planMapper.selectList(queryWrapper);
+        System.out.println(plans);
+    }
+
     /*分业查询:必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)*/
     @Test
     public void mpTest3() {
