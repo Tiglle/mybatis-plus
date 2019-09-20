@@ -36,14 +36,18 @@ public class MpApplicationTests {
     */
 
 
-    /*查询所有*/
+    /*
+    ---------------------------------------------------------------------------------------------查询所有
+    */
     @Test
     public void mpTest() {
         List<Plan> plans = planMapper.selectList(null);
         System.out.println(plans.size() + "==========================");
     }
 
-    /*新增,删除*/
+    /*
+    ---------------------------------------------------------------------------------------------新增,删除
+    */
     @Test
     public void mpTest1() {
         Plan plan = getPlan();
@@ -57,22 +61,37 @@ public class MpApplicationTests {
         System.out.println("成功删除=" + i1);
     }
 
-    /*1.查询为List<Map<String, Object>>结构*/
+    /*1.
+    ---------------------------------------------------------------------------------------------查询为List<Map<String, Object>>结构
+    1.当查询的字段很少时，可以使用此方法，配合queryWrapper.select("字段1","字段2") 使用
+    2.当特殊查询，实体类没有字段能够对应上时使用：queryWrapper.select("avg(age) as avgAge","min(age) as minAge")
+    */
     /*k为表字段（非实体属性），v为表值*/
-    /*selectObjs:只返回实体类的第一个地段的值*/
+    /*
+    ---------------------------------------------------------------------------------------------selectObjs:如果查询多个，只返回第一个地段的值
+    因为不知道那一列的具体类型，所以用Object接收
+    1.当只返回一列数据的时候可以使用
+    */
     @Test
     public void mpTest2() {
         Plan plan = insertPlan();
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
+        /*
+        //1.
+        queryWrapper.select("locno","order_no as orderNo");
         queryWrapper.eq("locno", plan.getLocno());
+        //2.
+        queryWrapper.select("avg(plan_box_num) as avgPlanBoxNum","min(plan_pieces_num) as minPlanPiecesNum").groupBy("service_reason_code").having("1={0}",1);
         List<Map<String, Object>> maps = planMapper.selectMaps(queryWrapper);
         maps.forEach(map -> map.forEach((k, v) -> System.out.print("k=" + k + ",v=" + v + "||")));
+         */
+        queryWrapper.select("locno");
         List<Object> objects = planMapper.selectObjs(queryWrapper);
         System.out.println(objects);
     }
 
     /*
-   condition的用法：为true时sql拼接此条件，false时不拼接
+   ---------------------------------------------------------------------------------------------condition的用法：为true时sql拼接此条件，false时不拼接
     方法：xxxxxx(boolean condition, R column, Object val)
    */
     @Test
@@ -85,7 +104,7 @@ public class MpApplicationTests {
     }
 
     /*
-    查询部分字段的方法
+    ---------------------------------------------------------------------------------------------查询部分字段的方法
     1.QueryWrapper的select(String... columns)方法,查询指定字段
     2.QueryWrapper的select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)方法，不查询指定字段
     */
@@ -100,7 +119,7 @@ public class MpApplicationTests {
     }
 
      /*
-     QueryWrapper条件构造器
+     ---------------------------------------------------------------------------------------------QueryWrapper(T Entity)条件构造器
      1.使用public QueryWrapper(T entity)构造器，传入实体对象
      2.实体有值得字段会加入sql条件拼接
      3.实体字段可以使用@TableField(condition = SqlCondition.LIKE)或者手写条件:condition = "%s&gt;#{%s}",默认eq
@@ -117,7 +136,27 @@ public class MpApplicationTests {
         System.out.println(plans);
     }
 
-    /*分业查询:必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)*/
+    /*
+     --------------------------------------------------------------------------------------------allEq
+    *--------------------------------------------------------------------------------------------allEq:全部eq(或个别isNull),有很多重载方法，根据需求选择
+    * */
+    @Test
+    public void mpTest9() {
+        QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
+        Map<String,Object> map = new HashMap<>();
+        map.put("locno","101");
+        //默认null会拼接为 order_no is null
+        map.put("order_no",null);
+        //默认 null2IsNull 为true（拼接null为 is null），false的话，忽略null的字段
+        queryWrapper.allEq(map,false);
+        List<Plan> plans = planMapper.selectList(queryWrapper);
+        System.out.println(plans);
+    }
+
+    /*
+    ---------------------------------------------------------------------------------------------分业查询:
+    必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)
+    */
     @Test
     public void mpTest3() {
         /*searchCount:是否查询总条数*/
@@ -126,7 +165,10 @@ public class MpApplicationTests {
         System.out.println(page);
     }
 
-    /*自定义分页查询，注意Wrapper的getCustomSqlSegment():获取所有条件*/
+    /*
+    ---------------------------------------------------------------------------------------------自定义分页查询，
+    注意Wrapper的getCustomSqlSegment():获取所有条件
+    */
     @Test
     public void mpTest4() {
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
@@ -136,7 +178,8 @@ public class MpApplicationTests {
         System.out.println(page);
     }
 
-    /*自定义分页关联查询：
+    /*
+    ---------------------------------------------------------------------------------------------自定义分页关联查询：
     1.xml写sql，只查询Plan主表部分，用Plan这个Entity接收即可
     2.Mapper使用@Select注解写Sql，返回主表和次表的字段，用Map接收返回*/
     @Test
