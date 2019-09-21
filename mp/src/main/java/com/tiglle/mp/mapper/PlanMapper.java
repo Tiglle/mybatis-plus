@@ -1,6 +1,7 @@
 package com.tiglle.mp.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,4 +47,12 @@ public interface PlanMapper extends BaseMapper<Plan> {
      */
     @Select("select p.order_no,pd.plan_order_no from plan p left join plan_dtl pd on p.order_no = pd.plan_order_no where p.locno = #{map.locno}")
     IPage<Map<String,Object>> selectRelationPage1(Page page, Map<String, Object> map);
+
+    /**
+     * 自定义sql
+     * @param wrapper
+     * @return
+     */
+    @Select("select ${ew.sqlSelect} from plan ${ew.customSqlSegment}")
+    List<Plan> customSelectList(@Param(Constants.WRAPPER) QueryWrapper<Plan> wrapper);
 }

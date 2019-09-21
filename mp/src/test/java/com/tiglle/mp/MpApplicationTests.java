@@ -183,6 +183,7 @@ public class MpApplicationTests {
         plan.setDelFlag(0);
         plan.setTraceId("1");
         plan.setRemarks("测试小明");
+        planService.saveOrUpdate()
         return plan;
     }
 
