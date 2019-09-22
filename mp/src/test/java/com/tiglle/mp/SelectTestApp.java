@@ -1,9 +1,12 @@
 package com.tiglle.mp;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.tiglle.mp.entity.Plan;
 import com.tiglle.mp.mapper.PlanMapper;
 import com.tiglle.mp.service.PlanService;
@@ -20,7 +23,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MpApplicationTests {
+public class SelectTestApp {
 
     //service 封装了 mapper，方法名字可能不一样
     @Autowired
@@ -28,12 +31,7 @@ public class MpApplicationTests {
     @Autowired
     private PlanMapper planMapper;
 
-    /*
-        排除非表字段的三种方式(实体类拥有的自断并不想与表中的自断关联)
-        1.加 static关键字
-        2.加上 transient 关键字
-        2.加上注解：TableField(exist=false) exist：是否要在表中存在，默认为true
-    */
+
 
 
     /*
@@ -45,36 +43,19 @@ public class MpApplicationTests {
         System.out.println(plans.size() + "==========================");
     }
 
-    /*
-    ---------------------------------------------------------------------------------------------新增,删除
-    */
-    @Test
-    public void mpTest1() {
-        Plan plan = getPlan();
-        //会自动填充自增长的id
-        int i = planMapper.insert(plan);
-        System.out.println(i + "=" + plan);
-        //删除
-        Map<String, Object> attrAndField = new HashMap<>();
-        attrAndField.put("locno", plan.getLocno());
-        int i1 = planMapper.deleteByMap(attrAndField);
-        System.out.println("成功删除=" + i1);
-    }
 
     /*1.
-    ---------------------------------------------------------------------------------------------查询为List<Map<String, Object>>结构
+    ---------------------------------------------------------------------------------------------List<Map<String, Object>>查询为此结构
     1.当查询的字段很少时，可以使用此方法，配合queryWrapper.select("字段1","字段2") 使用
     2.当特殊查询，实体类没有字段能够对应上时使用：queryWrapper.select("avg(age) as avgAge","min(age) as minAge")
-    */
-    /*k为表字段（非实体属性），v为表值*/
-    /*
-    ---------------------------------------------------------------------------------------------selectObjs:如果查询多个，只返回第一个地段的值
+    k为表字段（非实体属性），v为表值
+    ---------------------------------------------------------------------------------------------selectObjs查询:如果查询多个，只返回第一个地段的值
     因为不知道那一列的具体类型，所以用Object接收
     1.当只返回一列数据的时候可以使用
     */
     @Test
     public void mpTest2() {
-        Plan plan = insertPlan();
+        Plan plan = new CommonTestApp().insertPlan();
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
         /*
         //1.
@@ -166,6 +147,19 @@ public class MpApplicationTests {
     }
 
     /*
+    --------------------------------------------------------------------------------------------自定义sql时：customSqlSegment属性:翻译后的mysql的where和后面的条件
+                                                                                                                                            ：sqlSelect属性：需要查询的字段
+     */
+    @Test
+    public void mpTest1() {
+        QueryWrapper<Plan> wrapper = new QueryWrapper();
+        wrapper.select("id");//由于
+        wrapper.eq("locno","101");
+        List<Plan> list = planMapper.customSelectList(wrapper);
+        list.forEach(System.out::println);
+    }
+
+    /*
     ---------------------------------------------------------------------------------------------自定义分页查询，
     注意Wrapper的getCustomSqlSegment():获取所有条件
     */
@@ -193,48 +187,31 @@ public class MpApplicationTests {
         System.out.println(page);
     }
 
-    private Plan getPlan() {
-        Plan plan = new Plan();
-        plan.setLocno("1234567810");
-        plan.setCreateFlag("222");
-        plan.setOrderNo("333");
-        plan.setServiceDealCode("1");
-        plan.setCreateFlag("1");
-        plan.setInitiator("1");
-        plan.setServiceSource("1");
-        plan.setServiceReasonCode("444");
-        plan.setServiceDealCode("555");
-        plan.setExchangeSku("0");
-        plan.setProductQuality("1");
-        plan.setIsInWarehouse("0");
-        plan.setTaskType("1");
-        plan.setSourceOrderNo("666");
-        plan.setPlanBoxNum(10);
-        plan.setPlanPiecesNum(20);
-        plan.setActualPiecesNum(30);
-        plan.setDifferenceNum(40);
-        plan.setProductType("1");
-        plan.setVerifyUserId("777");
-        plan.setVerifyUserName("小明");
-        plan.setVerifyTime(LocalDateTime.now());
-        plan.setCreateUserId("999");
-        plan.setCreateUserName("小明");
-        plan.setCreateTime(LocalDateTime.now());
-        plan.setUpdateUserId("101");
-        plan.setUpdateUserName("小明");
-        plan.setUpdateTime(LocalDateTime.now());
-        plan.setDelFlag(0);
-        plan.setTraceId("1");
-        plan.setRemarks("测试小明");
-        planService.saveOrUpdate()
-        return plan;
+    /*
+    ---------------------------------------------------------------------------------------------Lambda 条件构造器
+                                                                                                                        and()等使用
+                                                                                                                        特殊的Lambda构造器
+     and(),or()等
+    */
+    @Test
+    public void mpTest10() {
+        /*3种方式*/
+        //1.
+        LambdaQueryWrapper<Object> lambdaQueryWrapper1 = new LambdaQueryWrapper<>();
+        //2.
+        LambdaQueryWrapper lambdaQueryWrapper2 = new QueryWrapper<Plan>().lambda();
+        //3.
+        LambdaQueryWrapper<Plan> lambdaQueryWrapper3 = Wrappers.<Plan>lambdaQuery();
+        //此时可以通过方法引用的方式，防止单词误写，例：
+        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(lambdaQueryWrapper->lambdaQueryWrapper.eq(Plan::getOrderNo,"123"));
+        //普通quertWrapper可能会写成：quertWrapper.eq("locco","101");，单词写错
+        List<Plan> plans = planMapper.selectList(lambdaQueryWrapper3);
+
+        /*特殊的Lambda构造器,可以直接用LambdaQueryWrapper对象调用crud方法，源码还是调用了planMapper的crud方法*/
+        LambdaQueryChainWrapper<Plan> planLambdaQueryChainWrapper = new LambdaQueryChainWrapper<>(planMapper);
+        List<Plan> list = planLambdaQueryChainWrapper.eq(Plan::getLocno, "101").list();
+        plans.forEach(System.out::println);
     }
 
-    private Plan insertPlan() {
-        Plan plan = getPlan();
-        //会自动填充自增长的id
-        planMapper.insert(plan);
-        return plan;
-    }
 
 }
