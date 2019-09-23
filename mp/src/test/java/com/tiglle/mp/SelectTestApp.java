@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -203,7 +204,10 @@ public class SelectTestApp {
         //3.
         LambdaQueryWrapper<Plan> lambdaQueryWrapper3 = Wrappers.<Plan>lambdaQuery();
         //此时可以通过方法引用的方式，防止单词误写，例：
-        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(lambdaQueryWrapper->lambdaQueryWrapper.eq(Plan::getOrderNo,"123"));
+        Function<LambdaQueryWrapper<Plan>,LambdaQueryWrapper<Plan>> f = queryWrapper -> queryWrapper.eq(Plan::getOrderNo,"");
+        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(f);
+                                //上下写法相等
+//        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(lambdaQueryWrapper->lambdaQueryWrapper.eq(Plan::getOrderNo,"123"));
         //普通quertWrapper可能会写成：quertWrapper.eq("locco","101");，单词写错
         List<Plan> plans = planMapper.selectList(lambdaQueryWrapper3);
 
