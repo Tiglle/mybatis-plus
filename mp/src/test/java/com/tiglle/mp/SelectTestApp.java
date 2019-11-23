@@ -50,7 +50,7 @@ public class SelectTestApp {
     1.当查询的字段很少时，可以使用此方法，配合queryWrapper.select("字段1","字段2") 使用
     2.当特殊查询，实体类没有字段能够对应上时使用：queryWrapper.select("avg(age) as avgAge","min(age) as minAge")
     k为表字段（非实体属性），v为表值
-    ---------------------------------------------------------------------------------------------selectObjs查询:如果查询多个，只返回第一个地段的值
+    ---------------------------------------------------------------------------------------------selectObjs查询:如果查询多个，只返回第一个字段的值
     因为不知道那一列的具体类型，所以用Object接收
     1.当只返回一列数据的时候可以使用
     */
@@ -58,7 +58,7 @@ public class SelectTestApp {
     public void mpTest2() {
         Plan plan = new CommonTestApp().insertPlan();
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
-        /*
+
         //1.
         queryWrapper.select("locno","order_no as orderNo");
         queryWrapper.eq("locno", plan.getLocno());
@@ -66,7 +66,7 @@ public class SelectTestApp {
         queryWrapper.select("avg(plan_box_num) as avgPlanBoxNum","min(plan_pieces_num) as minPlanPiecesNum").groupBy("service_reason_code").having("1={0}",1);
         List<Map<String, Object>> maps = planMapper.selectMaps(queryWrapper);
         maps.forEach(map -> map.forEach((k, v) -> System.out.print("k=" + k + ",v=" + v + "||")));
-         */
+
         queryWrapper.select("locno");
         List<Object> objects = planMapper.selectObjs(queryWrapper);
         System.out.println(objects);
@@ -93,7 +93,7 @@ public class SelectTestApp {
     @Test
     public void mpTest6() {
         QueryWrapper<Plan> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.select("id,order_no");
+        queryWrapper.select("id,order_no");
         //不查询字段 create_time,update_time
         queryWrapper.select(Plan.class,temp->!temp.getColumn().equals("create_time")&&!temp.getColumn().equals("update_time"));
         List<Plan> plans = planMapper.selectList(queryWrapper);
@@ -175,16 +175,16 @@ public class SelectTestApp {
 
     /*
     ---------------------------------------------------------------------------------------------自定义分页关联查询：
-    1.xml写sql，只查询Plan主表部分，用Plan这个Entity接收即可
+    1.xml写sql，如果只查询Plan主表部分，用Plan这个Entity接收即可，主表和次表都查询，用map接收（条件也是同理：只有主表或者次表的话，可以用QueryWrapper封装条件，都有的话用map封装条件）
     2.Mapper使用@Select注解写Sql，返回主表和次表的字段，用Map接收返回*/
     @Test
     public void mpTest5() {
         Map<String,Object> map = new HashMap<>();
         map.put("locno","101");
-//        IPage<Plan> page = planMapper.selectRelationPage(new Page(1,10),map);
-//        List<Plan> records = page.getRecords();
-//        System.out.println(page);
-        IPage<Map<String,Object>> page = planMapper.selectRelationPage1(new Page(1,10),map);
+        IPage<Plan> page = planMapper.selectRelationPage(new Page(1,10),map);
+        List<Plan> records = page.getRecords();
+        System.out.println(page);
+        IPage<Map<String,Object>> page1 = planMapper.selectRelationPage1(new Page(1,10),map);
         System.out.println(page);
     }
 
@@ -207,7 +207,7 @@ public class SelectTestApp {
         Function<LambdaQueryWrapper<Plan>,LambdaQueryWrapper<Plan>> f = queryWrapper -> queryWrapper.eq(Plan::getOrderNo,"");
         lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(f);
                                 //上下写法相等
-//        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(lambdaQueryWrapper->lambdaQueryWrapper.eq(Plan::getOrderNo,"123"));
+        lambdaQueryWrapper3.eq(Plan::getLocno,"101").and(lambdaQueryWrapper->lambdaQueryWrapper.eq(Plan::getOrderNo,"123"));
         //普通quertWrapper可能会写成：quertWrapper.eq("locco","101");，单词写错
         List<Plan> plans = planMapper.selectList(lambdaQueryWrapper3);
 

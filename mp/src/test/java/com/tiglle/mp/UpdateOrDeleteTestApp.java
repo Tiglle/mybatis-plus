@@ -45,8 +45,8 @@ public class UpdateOrDeleteTestApp {
     -----------------------------------------------------------------------------更新
     1.int updateById(T entity); 默认null不会set值
     2.int update(T entity, Wrapper<T> updateWrapper); entity为set后的语句，默认null不set，updateWrapper为where后的条件
-    3.updateWrapper直接包揽set后的语句和where后的语句
-    4.update同样适用   Lambda 条件构造器   和   特殊的Lambda构造器
+    3.updateWrapper.set().eq():直接包揽set后的语句和where后的语句
+    4.updateLambda同样适用   Lambda 条件构造器   和   特殊的Lambda构造器
     */
     @Test
     public void mpTest2() {

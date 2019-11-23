@@ -53,6 +53,6 @@ public interface PlanMapper extends BaseMapper<Plan> {
      * @param wrapper
      * @return
      */
-    @Select("select ${ew.sqlSelect} from plan ${ew.customSqlSegment}")
+    @Select("select ${ew.sqlSelect} from plan ${ew.customSqlSegment}")//ew为@Param(Constants.WRAPPER)
     List<Plan> customSelectList(@Param(Constants.WRAPPER) QueryWrapper<Plan> wrapper);
 }
