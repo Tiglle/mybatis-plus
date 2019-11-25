@@ -1,9 +1,6 @@
 package com.tiglle.mp.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.SqlCondition;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -160,6 +157,7 @@ public class Plan implements Serializable {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
@@ -175,11 +173,17 @@ public class Plan implements Serializable {
     /**
      * 修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 删除标识(0-正常,1-删除)
      */
+    /*
+    逻辑删除字段添加@TableLogic注解，可以配置局部 未删除value  和 已删除delval 的值
+     */
+    @TableLogic
+    @TableField(select = false)
     private Integer delFlag;
 
     /**

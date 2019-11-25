@@ -1,5 +1,4 @@
 /generator/target/
 /mp/target/
 /.idea/
-/**/.idea/
-
+**/.idea/**

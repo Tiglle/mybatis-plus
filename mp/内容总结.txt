@@ -1,0 +1,68 @@
+CommonTestApp.java
+1.排除非表字段的三种方式(实体类拥有的自断并不想与表中的自断关联)
+2.新增,删除
+
+3.通用Service
+    封装了很多好用的方法
+        1.批量插入
+        Service.saveBatch(list, 2000);
+
+        2.封装特殊Lambda条件构造器
+        Service.lambdaUpdate()；
+
+        3.等......
+
+=======================================================================================================================================================================================================================================
+
+SelectTestApp.java
+1.查询所有
+
+2.List<Map<String, Object>>查询为此结构
+    1.当查询的字段很少时，可以使用此方法，配合queryWrapper.select("字段1","字段2") 使用
+    2.当特殊查询，实体类没有字段能够对应上时使用：queryWrapper.select("avg(age) as avgAge","min(age) as minAge")k为表字段（非实体属性），v为表值
+    3.selectObjs查询:如果查询多个，只返回第一个字段的值
+
+3.condition的用法：为true时sql拼接此条件，false时不拼接
+方法：xxxxxx(boolean condition, R column, Object val)
+
+4.查询部分字段的方法
+ 1.QueryWrapper的select(String... columns)方法,查询指定字段
+ 2.QueryWrapper的select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)方法，不查询指定字段
+
+5.QueryWrapper(T Entity)条件构造器
+     1.使用public QueryWrapper(T entity)构造器，传入实体对象
+     2.实体有值得字段会加入sql条件拼接
+     3.实体字段可以使用@TableField(condition = SqlCondition.LIKE)或者手写条件:condition = "%s&gt;#{%s}",默认eq
+     4.实体的条件和wrapper的条件会一起使用，如果实体和wrapper重复，会重复拼接条件
+
+6.allEq
+allEq:全部eq(或个别isNull),有很多重载方法，根据需求选择
+
+7.分页查询:
+必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)
+
+8.自定义sql时：customSqlSegment属性:翻译后的mysql的where和后面的条件
+sqlSelect属性：需要查询的字段
+
+9.自定义分页查询，
+注意Wrapper的getCustomSqlSegment():获取所有条件
+
+10.自定义分页关联查询：
+    1.xml写sql，如果只查询Plan主表部分，用Plan这个Entity接收即可，主表和次表都查询，用map接收（条件也是同理：只有主表或者次表的话，可以用QueryWrapper封装条件，都有的话用map封装条件）
+    2.Mapper使用@Select注解写Sql，返回主表和次表的字段，用Map接收返回*/
+
+11.Lambda 条件构造器
+and()等使用
+特殊的Lambda构造器
+
+============================================================================================================================================================================================
+
+UpdateOrDeleteTestApp.java
+1.更新
+    1.int updateById(T entity); 默认null不会set值
+    2.int update(T entity, Wrapper<T> updateWrapper); entity为set后的语句，默认null不set，updateWrapper为where后的条件
+    3.updateWrapper.set().eq():直接包揽set后的语句和where后的语句
+    4.updateLambda同样适用   Lambda 条件构造器   和   特殊的Lambda构造器
+
+2.删除
+跟更新是一样的
