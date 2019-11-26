@@ -1,0 +1,129 @@
+ Consume Time：48 ms 2019-11-25 12:22:09
+ Execute SQL：SELECT locno FROM plan WHERE del_flag=1 AND id = 198
+
+ Consume Time：46 ms 2019-11-25 12:24:46
+ Execute SQL：SELECT locno FROM plan WHERE del_flag=1 AND id = 198
+
+ Consume Time：54 ms 2019-11-25 14:53:51
+ Execute SQL：SELECT id,locno,customer_no,order_no,status,create_flag,initiator,service_source,service_reason_code,service_deal_code,exchange_sku,product_quality,is_in_warehouse,task_type,source_order_no,plan_box_num,plan_pieces_num,actual_box_num,actual_pieces_num,difference_num,product_type,verify_user_id,verify_user_name,verify_time,create_user_id,create_user_name,create_time,update_user_id,update_user_name,update_time,trace_id,remarks,version_num FROM plan WHERE del_flag=1 LIMIT 0,10
+
+ Consume Time：53 ms 2019-11-25 15:33:12
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：48 ms 2019-11-25 15:35:38
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：70 ms 2019-11-25 15:35:39
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-25T23:35:38.915' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：55 ms 2019-11-25 15:37:19
+ Execute SQL：SELECT id FROM plan WHERE del_flag = 1
+
+ Consume Time：77 ms 2019-11-25 15:37:19
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-25T23:37:19.864' WHERE id = 198 AND del_flag = 1
+
+ Consume Time：50 ms 2019-11-25 15:40:14
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：72 ms 2019-11-25 15:40:14
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-25T23:40:14.267' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：36 ms 2019-11-25 15:40:14
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101
+
+ Consume Time：49 ms 2019-11-25 15:42:21
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：75 ms 2019-11-25 15:42:21
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-25T23:42:21.059' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：59 ms 2019-11-25 15:42:21
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND customer_id = 1234
+
+ Consume Time：52 ms 2019-11-25 15:43:00
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：73 ms 2019-11-25 15:43:00
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-25T23:43:00.382' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：37 ms 2019-11-25 15:43:00
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND customer_no = 1234
+
+ Consume Time：58 ms 2019-11-25 16:02:03
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：70 ms 2019-11-25 16:02:03
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-26T00:02:03.378' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：36 ms 2019-11-25 16:02:03
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND customer_no = 1234
+
+ Consume Time：49 ms 2019-11-25 16:02:49
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：72 ms 2019-11-25 16:02:49
+ Execute SQL：UPDATE plan SET locno = '234', update_time = '2019-11-26T00:02:49.185' WHERE plan.customer_no = 101 AND id = 198 AND del_flag = 1
+
+ Consume Time：43 ms 2019-11-25 16:02:49
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND customer_no = 1234
+
+ Consume Time：35 ms 2019-11-25 16:02:49
+ Execute SQL：SELECT COUNT(1) FROM plan WHERE customer_no = 1234
+
+ Consume Time：51 ms 2019-11-26 14:39:07
+ Execute SQL：SELECT id, locno, customer_no, order_no, status, create_flag, initiator, service_source, service_reason_code, service_deal_code, exchange_sku, product_quality, is_in_warehouse, task_type, source_order_no, plan_2019_box_num, plan_2019_pieces_num, actual_box_num, actual_pieces_num, difference_num, product_type, verify_user_id, verify_user_name, verify_time, create_user_id, create_user_name, create_time, update_user_id, update_user_name, update_time, trace_id, remarks, version_num FROM plan_2019 WHERE plan_2019.customer_no = 101 AND del_flag = 1
+
+ Consume Time：52 ms 2019-11-26 14:40:20
+ Execute SQL：SELECT id FROM plan_2019 WHERE plan_2019.customer_no = 101 AND del_flag = 1
+
+ Consume Time：50 ms 2019-11-26 14:42:23
+ Execute SQL：SELECT id FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：57 ms 2019-11-26 14:47:26
+ Execute SQL：SELECT id FROM plan_2019 WHERE plan_2019.customer_no = 101 AND del_flag = 1
+
+ Consume Time：59 ms 2019-11-26 14:48:02
+ Execute SQL：SELECT COUNT(1) FROM plan WHERE locno = '101'
+
+ Consume Time：39 ms 2019-11-26 14:48:02
+ Execute SQL：select * from plan WHERE locno = '101' LIMIT 0,10
+
+ Consume Time：55 ms 2019-11-26 14:49:46
+ Execute SQL：SELECT id FROM plan_2019 WHERE plan_2019.customer_no = 101 AND locno = '101'
+
+ Consume Time：55 ms 2019-11-26 14:51:37
+ Execute SQL：SELECT COUNT(1) FROM plan WHERE locno = '101'
+
+ Consume Time：42 ms 2019-11-26 14:51:37
+ Execute SQL：select * from plan WHERE locno = '101' LIMIT 0,10
+
+ Consume Time：51 ms 2019-11-26 14:53:40
+ Execute SQL：SELECT COUNT(1) FROM plan WHERE locno = '101'
+
+ Consume Time：38 ms 2019-11-26 14:53:40
+ Execute SQL：select * from plan WHERE locno = '101' LIMIT 0,10
+
+ Consume Time：54 ms 2019-11-26 14:54:14
+ Execute SQL：SELECT COUNT(1) FROM plan WHERE locno = '101'
+
+ Consume Time：39 ms 2019-11-26 14:54:14
+ Execute SQL：select * from plan WHERE locno = '101' LIMIT 0,10
+
+ Consume Time：55 ms 2019-11-26 14:55:02
+ Execute SQL：SELECT COUNT(1) FROM plan_2019 WHERE plan_2019.customer_no = 101 AND locno = '101'
+
+ Consume Time：52 ms 2019-11-26 14:55:28
+ Execute SQL：SELECT COUNT(1) FROM plan_2019 WHERE locno = '101'
+
+ Consume Time：49 ms 2019-11-26 15:43:42
+ Execute SQL：SELECT id, locno, customer_no, order_no, status, create_flag, initiator, service_source, service_reason_code, service_deal_code, exchange_sku, product_quality, is_in_warehouse, task_type, source_order_no, plan_box_num, plan_pieces_num, actual_box_num, actual_pieces_num, difference_num, product_type, verify_user_id, verify_user_name, verify_time, create_user_id, create_user_name, create_time, update_user_id, update_user_name, update_time, trace_id, remarks, version_num FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：47 ms 2019-11-26 15:49:56
+ Execute SQL：SELECT id, locno, customer_no, order_no, status, create_flag, initiator, service_source, service_reason_code, service_deal_code, exchange_sku, product_quality, is_in_warehouse, task_type, source_order_no, plan_box_num, plan_pieces_num, actual_box_num, actual_pieces_num, difference_num, product_type, verify_user_id, verify_user_name, verify_time, create_user_id, create_user_name, create_time, update_user_id, update_user_name, update_time, trace_id, remarks, version_num FROM plan WHERE plan.customer_no = 101 AND del_flag = 1
+
+ Consume Time：76 ms 2019-11-26 15:50:54
+ Execute SQL：DELETE FROM plan WHERE plan.customer_no = 101
+
+ Consume Time：68 ms 2019-11-26 15:58:12
+ Execute SQL：DELETE FROM plan WHERE plan.customer_no = 101
+

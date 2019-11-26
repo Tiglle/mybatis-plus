@@ -55,6 +55,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--打印 SQL 及执行时长-->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.8.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>

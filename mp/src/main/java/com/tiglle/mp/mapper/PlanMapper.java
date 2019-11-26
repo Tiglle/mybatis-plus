@@ -1,5 +1,6 @@
 package com.tiglle.mp.mapper;
 
+import com.baomidou.mybatisplus.annotation.SqlParser;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public interface PlanMapper extends BaseMapper<Plan> {
      * @param queryWrapper
      * @return
      */
+    @SqlParser(filter = true)//特定sql过滤：某个方法不增加租户条件信息 和 不增加动态表名的替换  true：不增加，过滤掉  false：增加
     IPage<Plan> selectCustomPage(Page page, @Param(Constants.WRAPPER) Wrapper<Plan> queryWrapper);
 
     /**
@@ -55,4 +58,11 @@ public interface PlanMapper extends BaseMapper<Plan> {
      */
     @Select("select ${ew.sqlSelect} from plan ${ew.customSqlSegment}")//ew为@Param(Constants.WRAPPER)
     List<Plan> customSelectList(@Param(Constants.WRAPPER) QueryWrapper<Plan> wrapper);
+
+    /**
+     * 自动以通用方法
+     * @param id
+     * @return
+     */
+    int removeById(Serializable id);
 }

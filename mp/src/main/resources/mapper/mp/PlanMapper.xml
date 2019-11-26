@@ -37,6 +37,7 @@
         <result column="del_flag" property="delFlag" />
         <result column="trace_id" property="traceId" />
         <result column="remarks" property="remarks" />
+        <result column="version_num" property="versionNum" />
     </resultMap>
 
     <select id="selectCustomPage" resultType="com.tiglle.mp.entity.Plan">

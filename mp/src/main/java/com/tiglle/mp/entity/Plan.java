@@ -196,5 +196,11 @@ public class Plan implements Serializable {
      */
     private String remarks;
 
+    /**
+     * 备注
+     */
+    @Version
+    private Integer versionNum;
+
 
 }

@@ -138,7 +138,7 @@ public class SelectTestApp {
 
     /*
     ---------------------------------------------------------------------------------------------分页查询:
-    必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页)
+    必须将分页插件PaginationInterceptor注入到spring,否则查询的是所有记录(没有分页||逻辑分页):com.tiglle.mp.config.MybatisPlusConfiguration.paginationInterceptor
     */
     @Test
     public void mpTest3() {
